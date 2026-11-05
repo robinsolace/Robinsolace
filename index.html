@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROBIN (@robinsolace) — Cinematic & Meme Video Editor</title>
     
-    <!-- Fonts and Icons Framework -->
+    <!-- Premium Icons Support -->
     <link rel="stylesheet" href="https://cloudflare.com">
 
-    <!-- ALL STYLING (CSS) INCLUDED HERE directly -->
     <style>
-        /* Reset Core Setup */
+        /* HitsX Global Pure Cinematic Black Theme */
         * {
             margin: 0;
             padding: 0;
@@ -18,215 +17,226 @@
         }
 
         body {
-            background-color: #05070f; /* Deep dark blue-black base to match Loki image background */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: #ffffff;
             display: flex;
             justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             padding: 40px 20px;
+        }
+
+        /* Ambient Dynamic Background Glows like HitsX */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%; left: -10%; width: 50%; height: 50%;
+            background: radial-gradient(circle, rgba(0, 188, 255, 0.08) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%; right: -10%; width: 50%; height: 50%;
+            background: radial-gradient(circle, rgba(0, 112, 243, 0.08) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
         }
 
         .portfolio-container {
             width: 100%;
-            max-width: 550px;
-            text-align: center;
+            max-width: 480px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Header Styling with Blue Accents */
+        /* Profile Layout Container */
         .profile-header {
-            margin-bottom: 40px;
+            width: 100%;
+            margin-bottom: 35px;
+            text-align: center;
         }
 
         .avatar-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 16px;
         }
 
         .profile-avatar {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 2px solid #00bcff; /* Neon bright blue matching text flare */
+            border: 1.5px solid rgba(0, 188, 255, 0.6);
             object-fit: cover;
-            object-position: top; /* Ensures face centers cleanly */
-            z-index: 2;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 188, 255, 0.4);
-        }
-
-        .blue-glow {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #0070f3;
-            border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.5;
-            z-index: 1;
+            object-position: top;
+            box-shadow: 0 8px 24px rgba(0, 188, 255, 0.15);
         }
 
         .profile-name {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 188, 255, 0.6);
         }
 
         .profile-username {
             color: #00bcff;
-            font-size: 1rem;
-            margin-bottom: 15px;
+            font-size: 0.95rem;
+            margin: 4px 0 16px;
             font-weight: 500;
-            letter-spacing: 0.5px;
         }
 
         .profile-bio {
-            color: #a0aec0;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            color: #8892b0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 380px;
+            margin: 0 auto 20px;
         }
 
-        /* Live View Counter styling */
+        /* HitsX Style Compact Counter Box */
         .view-counter {
-            background: rgba(0, 188, 255, 0.08);
-            border: 1px solid rgba(0, 188, 255, 0.2);
-            display: inline-block;
-            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 6px 14px;
             border-radius: 20px;
-            margin-top: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 1px;
-            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ccd6f6;
         }
 
-        .text-blue {
-            color: #00bcff;
-            margin-right: 5px;
-        }
-
-        /* Grid Posts & Content Area */
+        /* Flat & Elegant Structural Layout Grid */
         .content-grid {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .post-card {
-            background: #0e1220;
-            border: 1px solid #1a233d;
-            border-radius: 12px;
+            background: #0a0c10;
+            border: 1px solid #161b22;
+            border-radius: 14px;
             overflow: hidden;
             text-align: left;
-            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.25s ease, transform 0.25s ease;
         }
 
         .post-card:hover {
-            transform: translateY(-3px);
             border-color: #00bcff;
-            box-shadow: 0 5px 15px rgba(0, 188, 255, 0.1);
+            transform: translateY(-2px);
         }
 
         .video-placeholder {
-            height: 160px;
-            background: linear-gradient(135deg, #070a14, #121829);
+            height: 150px;
+            background: linear-gradient(180deg, #0d1117 0%, #07090e 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #1a233d;
+            border-bottom: 1px solid #161b22;
         }
 
         .blue-icon {
-            font-size: 3rem;
-            color: rgba(0, 188, 255, 0.5);
-            cursor: pointer;
-            transition: color 0.2s, transform 0.2s;
+            font-size: 2.8rem;
+            color: rgba(0, 188, 255, 0.4);
+            transition: color 0.2s ease, transform 0.2s ease;
         }
 
         .post-card:hover .blue-icon {
             color: #00bcff;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .post-details {
-            padding: 15px 20px;
+            padding: 16px;
         }
 
         .post-details h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 4px;
         }
 
         .genre-tag {
-            font-size: 0.8rem;
-            color: #718096;
+            font-size: 0.75rem;
+            color: #57606a;
             margin-bottom: 10px;
+            font-weight: 500;
         }
 
         .audio-info {
-            font-size: 0.85rem;
-            color: #cbd5e0;
-            margin-bottom: 15px;
-        }
-
-        .audio-info i {
-            color: #00bcff;
-            margin-right: 4px;
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .btn-watch {
-            display: inline-block;
-            background: #00bcff;
-            color: #05070f;
+            display: block;
+            text-align: center;
+            background: #ffffff;
+            color: #000000;
             text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
             font-size: 0.85rem;
-            font-weight: 700;
-            transition: background 0.2s, box-shadow 0.2s;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        .btn-watch:hover {
-            background: #009fd9;
-            box-shadow: 0 0 10px rgba(0, 188, 255, 0.4);
+        .post-card:hover .btn-watch {
+            background: #00bcff;
+            color: #ffffff;
         }
 
-        /* Outer links & Buttons */
+        /* Action Nav Redirection Buttons */
         .links-section {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-top: 15px;
+            width: 100%;
+            margin-top: 8px;
         }
 
         .action-link-btn {
-            background: transparent;
-            border: 1px solid #1a233d;
-            color: white;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #161b22;
+            color: #c9d1d9;
             padding: 14px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
+            font-weight: 500;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+            gap: 8px;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
         }
 
         .action-link-btn:hover {
-            background: rgba(0, 188, 255, 0.05);
-            border-color: #00bcff;
-            box-shadow: 0 0 8px rgba(0, 188, 255, 0.2);
+            background: rgba(0, 188, 255, 0.03);
+            border-color: rgba(0, 188, 255, 0.4);
+            color: #ffffff;
         }
 
         footer {
             margin-top: 50px;
-            color: #4a5568;
-            font-size: 0.8rem;
+            color: #484f58;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
         }
     </style>
@@ -235,27 +245,23 @@
 
     <div class="portfolio-container">
         
-        <!-- Header -->
+        <!-- Profile Panel Header -->
         <header class="profile-header">
             <div class="avatar-wrapper">
-                <!-- IMPORTANT: Save your image as profile.png in the same folder -->
                 <img src="profile.png" alt="ROBIN" class="profile-avatar">
-                <div class="blue-glow"></div>
             </div>
             <h1 class="profile-name">ROBIN</h1>
-            <p class="profile-username"><i class="fab fa-instagram"></i> @robinsolace</p>
+            <p class="profile-username">@robinsolace</p>
             <p class="profile-bio">Standing alone at the end of time. ⏳🕯️<br>Free movie website & app available. Open for Collabs — DM Now!</p>
             
-            <!-- Live View Counter Section -->
             <div class="view-counter">
-                <i class="fas fa-eye text-blue"></i> Profile Views: <span id="count">00000</span>
+                <i class="fas fa-eye" style="color: #00bcff;"></i> Views: <span id="count">00000</span>
             </div>
         </header>
 
-        <!-- Content Grid -->
+        <!-- Dynamic Grid Showcase -->
         <main class="content-grid">
             
-            <!-- Post Card 1 -->
             <div class="post-card">
                 <div class="video-placeholder">
                     <i class="fas fa-play-circle blue-icon"></i>
@@ -263,12 +269,11 @@
                 <div class="post-details">
                     <h3>🎬 Captain America Meme Edit</h3>
                     <p class="genre-tag">Comedy / Action / Satire</p>
-                    <p class="audio-info"><i class="fas fa-music"></i> Homelander Theme / I Can Do Anything</p>
+                    <p class="audio-info"><i class="fas fa-music" style="color:#00bcff;"></i> Homelander Theme / I Can Do Anything</p>
                     <a href="https://instagram.com" target="_blank" class="btn-watch">Watch Reel</a>
                 </div>
             </div>
 
-            <!-- Post Card 2 -->
             <div class="post-card">
                 <div class="video-placeholder">
                     <i class="fas fa-play-circle blue-icon"></i>
@@ -276,18 +281,17 @@
                 <div class="post-details">
                     <h3>🎬 Trigger Korean/Hindi Mix</h3>
                     <p class="genre-tag">Action / Crime / Psychological Thriller</p>
-                    <p class="audio-info"><i class="fas fa-music"></i> Tu Hi Hai Aashiqui (Arijit Singh)</p>
+                    <p class="audio-info"><i class="fas fa-music" style="color:#00bcff;"></i> Tu Hi Hai Aashiqui (Arijit Singh)</p>
                     <a href="https://instagram.com" target="_blank" class="btn-watch">Watch Reel</a>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="links-section">
                 <a href="https://instagram.com" target="_blank" class="action-link-btn">
-                    <i class="fab fa-instagram"></i> Follow on Instagram
+                    <i class="fab fa-instagram" style="color:#00bcff;"></i> Follow on Instagram
                 </a>
                 <a href="https://instagram.com" target="_blank" class="action-link-btn">
-                    <i class="fas fa-envelope"></i> DM for Collaboration
+                    <i class="fas fa-envelope" style="color:#00bcff;"></i> DM for Collaboration
                 </a>
             </div>
 
@@ -298,21 +302,17 @@
         </footer>
     </div>
 
-    <!-- LIVE VIEW COUNTER SCRIPT (JAVASCRIPT) INCLUDED HERE -->
+    <!-- Real-time Local View Increment Script -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             let currentViews = localStorage.getItem("portfolio_views");
             if (currentViews === null) {
-                currentViews = 1540; // Starting baseline views
+                currentViews = 2430; // Solid setup seed count
             } else {
                 currentViews = parseInt(currentViews) + 1;
             }
             localStorage.setItem("portfolio_views", currentViews);
-            
-            const countDisplay = document.getElementById("count");
-            if (countDisplay) {
-                countDisplay.textContent = currentViews.toString().padStart(5, '0');
-            }
+            document.getElementById("count").textContent = currentViews.toString().padStart(5, '0');
         });
     </script>
 </body>
