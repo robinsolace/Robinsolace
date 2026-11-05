@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HITSX.EDIT | A Cinematic Video Editor</title>
+    <title>ROBIN | Cinematic Video Editor & Content Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,9 +11,15 @@
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#0a090c',
-                        cardbg: '#141218',
-                        accent: '#e25d48',
+                        brandDark: '#040406',
+                        glassBg: 'rgba(15, 15, 22, 0.75)',
+                        neonPurple: '#a855f7',
+                        neonRed: '#f43f5e',
+                        neonCyan: '#06b6d4'
+                    },
+                    boxShadow: {
+                        'neon-glow': '0 0 25px rgba(168, 85, 247, 0.35)',
+                        'red-glow': '0 0 25px rgba(244, 63, 94, 0.35)'
                     }
                 }
             }
@@ -22,389 +28,415 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #050508;
+            background-color: #040406;
             color: #f3f4f6;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(20, 18, 24, 0.7);
+        .glass-panel {
+            background: rgba(18, 18, 28, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #a855f7 0%, #f43f5e 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="bg-[#050508] text-gray-100 selection:bg-rose-500 selection:text-white">
+<body class="selection:bg-purple-600 selection:text-white">
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-[#050508]/80 backdrop-blur-md border-b border-white/5">
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-panel border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 group-hover:border-rose-500 transition">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Avatar" class="w-full h-full object-cover">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-purple-500 shadow-neon-glow">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" alt="ROBIN" class="w-full h-full object-cover">
                 </div>
-                <span class="font-bold tracking-widest text-lg text-white">HITSX.EDIT</span>
+                <div>
+                    <h1 class="font-black text-xl tracking-wider text-white">ROBIN</h1>
+                    <p class="text-[10px] text-purple-400 font-mono">@robinsolace</p>
+                </div>
             </a>
-            <div class="flex items-center gap-4">
-                <a href="https://instagram.com" target="_blank" class="hidden sm:inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider px-4 py-2 rounded-full border border-white/10 hover:border-white/30 transition">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
-                <button id="menu-btn" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition">
-                    <i class="fa-solid fa-bars text-lg"></i>
+            
+            <nav class="hidden md:flex items-center gap-6 text-sm font-semibold tracking-wide">
+                <a href="#home" class="hover:text-purple-400 transition">HOME</a>
+                <button onclick="openModal('sceneModal')" class="hover:text-purple-400 transition flex items-center gap-2">
+                    <i class="fa-solid fa-clapperboard text-purple-400"></i> SCENE PACKS (4K)
                 </button>
+                <button onclick="openModal('movieModal')" class="hover:text-rose-400 transition flex items-center gap-2">
+                    <i class="fa-solid fa-film text-rose-500"></i> FREE MOVIES (HD)
+                </button>
+                <a href="#work" class="hover:text-purple-400 transition">MY WORK</a>
+                <a href="#collab" class="hover:text-purple-400 transition">COLLAB</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="https://ig.me/m/robinsolace" target="_blank" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-rose-600 text-xs font-bold uppercase tracking-wider text-white shadow-neon-glow hover:opacity-90 transition">
+                    <i class="fab fa-instagram mr-1"></i> DM Instagram
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Mobile Menu Drawer -->
-    <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col justify-between p-8 translate-x-full transition-transform duration-300">
-        <div class="flex justify-between items-center">
-            <span class="font-bold tracking-widest text-lg">HITSX.EDIT</span>
-            <button id="close-btn" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+    <!-- Hero Section -->
+    <section id="home" class="pt-36 pb-20 px-4 relative flex flex-col items-center justify-center text-center min-h-screen">
+        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/3 w-80 h-80 bg-rose-600/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto space-y-6 relative z-10">
+            <div class="inline-block p-1.5 rounded-full bg-gradient-to-tr from-purple-500 via-rose-500 to-cyan-500 shadow-neon-glow mb-2">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="ROBIN Solace" class="w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover">
+            </div>
+            
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-purple-500/30 text-xs font-mono text-purple-300">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> @robinsolace · Cinematic Creator
+            </div>
+
+            <h1 class="text-5xl sm:text-7xl font-black uppercase tracking-tight text-white">
+                ROBIN <span class="gradient-text">SOLACE</span>
+            </h1>
+            <p class="text-xl sm:text-2xl font-bold tracking-wide text-gray-300">
+                CINEMATIC EDITING · 4K SCENE PACKS · FREE HINDI MOVIES
+            </p>
+            <p class="text-sm sm:text-base text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Welcome to the official hub. Access free 4K scene packs for editing, watch full HD Hindi Dubbed movies, or submit your edits for collaboration.
+            </p>
+
+            <!-- Quick Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4 pt-6">
+                <button onclick="openModal('sceneModal')" class="px-8 py-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold tracking-wider shadow-neon-glow transition flex items-center gap-3">
+                    <i class="fa-solid fa-photo-film text-lg"></i> 4K SCENE PACKS
+                </button>
+                <button onclick="openModal('movieModal')" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:opacity-90 text-white font-bold tracking-wider shadow-red-glow transition flex items-center gap-3">
+                    <i class="fa-solid fa-play text-lg"></i> WATCH FREE MOVIES
+                </button>
+                <a href="#collab" class="px-8 py-4 rounded-2xl glass-panel hover:bg-white/10 text-white font-bold tracking-wider border border-white/20 transition flex items-center gap-2">
+                    <i class="fa-solid fa-handshake"></i> COLLAB REQUIREMENTS
+                </a>
+            </div>
         </div>
-        <nav class="flex flex-col gap-6 text-2xl font-semibold tracking-wide text-center">
-            <a href="#" class="mobile-link hover:text-rose-500 transition">HOME</a>
-            <a href="#universe" class="mobile-link hover:text-rose-500 transition">UNIVERSE</a>
-            <a href="#work" class="mobile-link hover:text-rose-500 transition">MY WORK</a>
-            <a href="#stats" class="mobile-link hover:text-rose-500 transition">STATS</a>
-            <a href="#collaborate" class="mobile-link hover:text-rose-500 transition">COLLABORATE</a>
-        </nav>
-        <div class="text-center">
-            <a href="#collaborate" class="inline-block w-full py-4 rounded-full bg-[#1c1822] border border-white/10 font-bold tracking-wider hover:bg-white hover:text-black transition">SEND YOUR EDIT</a>
+    </section>
+
+    <!-- My Work / Portfolio Section with % Metrics -->
+    <section id="work" class="py-20 px-4 max-w-7xl mx-auto space-y-12">
+        <div class="text-center space-y-3">
+            <span class="text-xs font-bold uppercase tracking-[0.3em] text-purple-400">Quality Assured</span>
+            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">View My Work & Quality Stats</h2>
+            <p class="text-sm text-gray-400 max-w-md mx-auto">Every edit is crafted frame by frame with precise color grading and motion sync.</p>
+        </div>
+
+        <!-- Rating Showcase Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-3xl space-y-4 border border-purple-500/20">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Marvel & Action Edits</span>
+                    <span class="text-2xl font-black text-green-400">99.4%</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">VFX & Color Grade Score</h3>
+                <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-500 to-green-400 h-full w-[99.4%]"></div>
+                </div>
+                <p class="text-xs text-gray-400">Ultra-sharp 4K 60FPS renders with custom RSMB motion blur.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-3xl space-y-4 border border-rose-500/20">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Anime & Fantasy</span>
+                    <span class="text-2xl font-black text-green-400">98.8%</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">Beat Sync Precision</h3>
+                <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-rose-500 to-green-400 h-full w-[98.8%]"></div>
+                </div>
+                <p class="text-xs text-gray-400">Frame-accurate sound design and blade slash effects.</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-3xl space-y-4 border border-cyan-500/20">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Cinematic Storytelling</span>
+                    <span class="text-2xl font-black text-green-400">100%</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">Audience Retention</h3>
+                <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-cyan-500 to-green-400 h-full w-[100%]"></div>
+                </div>
+                <p class="text-xs text-gray-400">High engagement pacing with immersive audio transitions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Section -->
+    <section id="collab" class="py-20 px-4 max-w-4xl mx-auto space-y-12">
+        <div class="text-center space-y-3">
+            <span class="text-xs font-bold uppercase tracking-[0.3em] text-rose-500">Collaborate with ROBIN</span>
+            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">Collaboration Requirements</h2>
+            <p class="text-sm text-gray-400 max-w-md mx-auto">Check the eligibility rules below before requesting a collaboration.</p>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-8 sm:p-10 border border-purple-500/30 space-y-6">
+            <ul class="space-y-4 text-sm sm:text-base text-gray-200">
+                <li class="flex items-start gap-4">
+                    <i class="fa-solid fa-circle-check text-purple-400 text-lg mt-1"></i>
+                    <span>You must follow my social media profile (<strong class="text-purple-300">@robinsolace</strong>).</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i class="fa-solid fa-circle-check text-purple-400 text-lg mt-1"></i>
+                    <span>You must have <strong>more than 1,000 followers</strong>.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i class="fa-solid fa-circle-check text-purple-400 text-lg mt-1"></i>
+                    <span>Your videos must be properly edited and presented.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i class="fa-solid fa-circle-check text-purple-400 text-lg mt-1"></i>
+                    <span>Your content must be original, not copied.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i class="fa-solid fa-circle-check text-purple-400 text-lg mt-1"></i>
+                    <span>Your videos must be in <strong>HD / 4K quality</strong>.</span>
+                </li>
+            </ul>
+            <div class="p-4 rounded-xl bg-purple-950/40 border border-purple-500/30 text-xs text-purple-300">
+                <i class="fa-solid fa-info-circle mr-1"></i> Views are not required. Quality and originality matter most.
+            </div>
+
+            <div class="pt-4 text-center">
+                <a href="https://ig.me/m/robinsolace" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-rose-600 to-cyan-600 text-white font-black tracking-wider shadow-neon-glow hover:scale-105 transition transform">
+                    <i class="fab fa-instagram text-xl"></i> REQUEST A COLLAB (DIRECT DM)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene Pack Modal (In-Website Page) -->
+    <div id="sceneModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl hidden flex-col overflow-y-auto">
+        <div class="max-w-7xl mx-auto w-full p-6 space-y-8">
+            <div class="flex justify-between items-center border-b border-white/10 pb-6">
+                <div>
+                    <h2 class="text-2xl sm:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+                        <i class="fa-solid fa-clapperboard text-purple-500"></i> 4K SCENE PACK LIBRARY
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">High-quality raw editing clips from all top movies and series.</p>
+                </div>
+                <button onclick="closeModal('sceneModal')" class="w-12 h-12 rounded-full glass-panel hover:bg-white/20 flex items-center justify-center text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Scene Pack Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Marvel Pack -->
+                <div class="glass-panel rounded-3xl overflow-hidden p-5 space-y-4 border border-purple-500/20">
+                    <div class="aspect-video rounded-2xl overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1635863138275-d9b33299680b?auto=format&fit=crop&q=80&w=800" alt="Marvel" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-purple-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">4K HDR</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-white">All Marvel Cinematic Scene Pack</h3>
+                    <p class="text-xs text-gray-400">Avengers, Spider-Man, Thor, Iron Man raw clips ready for editing.</p>
+                    <a href="https://ig.me/m/robinsolace?text=Hey%20Robin!%20Send%20me%20Marvel%204K%20Scene%20Pack%20Link" target="_blank" class="block text-center py-3 rounded-xl bg-purple-600/30 hover:bg-purple-600 border border-purple-500/50 text-xs font-bold tracking-wider transition">
+                        REQUEST PACK VIA DM
+                    </a>
+                </div>
+
+                <!-- DC Pack -->
+                <div class="glass-panel rounded-3xl overflow-hidden p-5 space-y-4 border border-cyan-500/20">
+                    <div class="aspect-video rounded-2xl overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=800" alt="DC" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-cyan-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">4K HDR</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-white">DC Extended Universe Pack</h3>
+                    <p class="text-xs text-gray-400">The Batman, Snyder Cut, Joker, Flash high frame rate scene packs.</p>
+                    <a href="https://ig.me/m/robinsolace?text=Hey%20Robin!%20Send%20me%20DC%204K%20Scene%20Pack%20Link" target="_blank" class="block text-center py-3 rounded-xl bg-cyan-600/30 hover:bg-cyan-600 border border-cyan-500/50 text-xs font-bold tracking-wider transition">
+                        REQUEST PACK VIA DM
+                    </a>
+                </div>
+
+                <!-- Stranger Things Pack -->
+                <div class="glass-panel rounded-3xl overflow-hidden p-5 space-y-4 border border-rose-500/20">
+                    <div class="aspect-video rounded-2xl overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=800" alt="Stranger Things" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-rose-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">4K HDR</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-white">Stranger Things & Series Pack</h3>
+                    <p class="text-xs text-gray-400">Stranger Things, Peaky Blinders, Breaking Bad, The Boys series packs.</p>
+                    <a href="https://ig.me/m/robinsolace?text=Hey%20Robin!%20Send%20me%20Series%204K%20Scene%20Pack%20Link" target="_blank" class="block text-center py-3 rounded-xl bg-rose-600/30 hover:bg-rose-600 border border-rose-500/50 text-xs font-bold tracking-wider transition">
+                        REQUEST PACK VIA DM
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="pt-36 pb-20 px-4 text-center relative">
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="max-w-3xl mx-auto space-y-6">
-            <div class="inline-block p-1 rounded-full border border-white/10 bg-white/5 mb-2">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Logo" class="w-24 h-24 rounded-full object-cover mx-auto shadow-2xl">
-            </div>
-            <h2 class="text-xs uppercase tracking-[0.3em] text-gray-400">@HITSX.EDIT · VIDEO EDITOR</h2>
-            <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white uppercase">HITSX.EDIT</h1>
-            <p class="text-xl sm:text-2xl font-medium tracking-wide text-gray-300">A CINEMATIC VIDEO EDITOR</p>
-            <p class="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
-                🎬 Cinema · Edits · Stories — curating moments, creating emotions. From Marvel action to anime battles, Indian epics to romantic storytelling — every cut hits different.
-            </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                <a href="#work" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-bold tracking-wider hover:bg-gray-200 transition">EXPLORE MY WORK</a>
-                <a href="#collaborate" class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#141218] border border-white/10 text-white font-bold tracking-wider hover:bg-white/10 transition">SEND YOUR EDIT</a>
-            </div>
-        </div>
-        <div class="flex flex-wrap justify-center gap-3 mt-12 text-xs uppercase tracking-widest text-gray-500 font-semibold">
-            <span>Marvel</span>
-            <span>•</span>
-            <span>Anime & Fantasy</span>
-            <span>•</span>
-            <span>Indian Cinema</span>
-            <span>•</span>
-            <span>Romantic Edits</span>
-        </div>
-    </section>
-
-    <!-- Directed Sequence / Universe Section -->
-    <section id="universe" class="py-20 px-4 max-w-4xl mx-auto space-y-24">
-        <div class="text-center space-y-3">
-            <span class="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">Directed Sequence</span>
-            <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight">Every edit has its own universe</h2>
-            <p class="text-sm text-gray-400 max-w-md mx-auto">A cinematic walk through the energy behind each editing category — one moment at a time, directed like a film sequence.</p>
-        </div>
-
-        <!-- Universe Item 1 -->
-        <div class="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-            <span class="text-xs font-mono uppercase tracking-widest text-rose-400">Anime & Fantasy</span>
-            <h3 class="text-3xl sm:text-5xl font-black uppercase tracking-wider">One Slash. Pure Energy.</h3>
-            <p class="text-gray-400 text-sm sm:text-base max-w-lg mx-auto">Demon Slayer-inspired katana effects, glowing water trails and dramatic character reveals — cut to the beat.</p>
-            <div class="pt-4">
-                <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 mx-auto flex items-center justify-center">
-                    <i class="fa-solid fa-play text-white"></i>
+    <!-- Free Movies Section Modal (In-Website Multi-Server Player) -->
+    <div id="movieModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl hidden flex-col overflow-y-auto">
+        <div class="max-w-7xl mx-auto w-full p-6 space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <h2 class="text-2xl sm:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+                        <i class="fa-solid fa-film text-rose-500"></i> FREE MOVIES (HINDI DUBBED)
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Full HD Online Streaming with 5 Backup Servers.</p>
                 </div>
+                <button onclick="closeModal('movieModal')" class="w-12 h-12 rounded-full glass-panel hover:bg-white/20 flex items-center justify-center text-white text-xl self-end sm:self-auto">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-        </div>
 
-        <!-- Universe Item 2 -->
-        <div class="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-            <span class="text-xs font-mono uppercase tracking-widest text-amber-400">Marvel & Superhero</span>
-            <h3 class="text-3xl sm:text-5xl font-black uppercase tracking-wider">Thunder. Unleashed.</h3>
-            <p class="text-gray-400 text-sm sm:text-base max-w-lg mx-auto">Golden lightning strikes and god-tier entrances — grading built for pure cinematic impact.</p>
-            <div class="pt-4">
-                <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 mx-auto flex items-center justify-center">
-                    <i class="fa-solid fa-play text-white"></i>
-                </div>
+            <!-- Search Bar -->
+            <div class="relative">
+                <input type="text" id="movieSearch" onkeyup="searchMovies()" placeholder="Search movies (e.g. Marvel, Batman, Avatar)..." class="w-full py-4 px-6 rounded-2xl glass-panel border border-white/15 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm">
+                <i class="fa-solid fa-magnifying-glass absolute right-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
             </div>
-        </div>
 
-        <!-- Universe Item 3 -->
-        <div class="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400">Indian Cinema & Mythology</span>
-            <h3 class="text-3xl sm:text-5xl font-black uppercase tracking-wider">A King Never Walks in Quietly.</h3>
-            <p class="text-gray-400 text-sm sm:text-base max-w-lg mx-auto">Royal warrior entrances, mythological dialogue drops and dramatic score-synced reveals, inspired by Indian epic cinema.</p>
-        </div>
-
-        <!-- Universe Item 4 -->
-        <div class="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-            <span class="text-xs font-mono uppercase tracking-widest text-rose-400">Romantic & Emotional</span>
-            <h3 class="text-3xl sm:text-5xl font-black uppercase tracking-wider">Frame by Frame, It Hits Different.</h3>
-            <p class="text-gray-400 text-sm sm:text-base max-w-lg mx-auto">From Fault in Our Stars to La La Land-style storytelling — every romantic edit is built to be felt, replayed, and remembered.</p>
-        </div>
-    </section>
-
-    <!-- Profile Stats Section -->
-    <section id="stats" class="py-20 px-4 max-w-5xl mx-auto">
-        <div class="glass-card rounded-3xl p-8 sm:p-12 space-y-8">
-            <div class="text-center space-y-2">
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Profile Statistics</span>
-                <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight">HITSX.EDIT on Instagram</h2>
-                <p class="text-xs text-gray-500">Reference numbers from the @hitsx.edit profile · last updated October 2026</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="bg-[#0f0e13] border border-white/5 rounded-2xl p-6 text-center">
-                    <p class="text-3xl sm:text-4xl font-black text-white">115</p>
-                    <p class="text-xs uppercase tracking-widest text-gray-400 mt-2">Posts</p>
-                </div>
-                <div class="bg-[#0f0e13] border border-white/5 rounded-2xl p-6 text-center">
-                    <p class="text-3xl sm:text-4xl font-black text-white">7.3K</p>
-                    <p class="text-xs uppercase tracking-widest text-gray-400 mt-2">Followers</p>
-                </div>
-                <div class="bg-[#0f0e13] border border-white/5 rounded-2xl p-6 text-center">
-                    <p class="text-3xl sm:text-4xl font-black text-white">25.5M</p>
-                    <p class="text-xs uppercase tracking-widest text-gray-400 mt-2">Views (30 Days)</p>
-                </div>
-            </div>
-            <p class="text-center text-xs text-gray-500 italic">Numbers are manually maintained, not pulled live</p>
-        </div>
-    </section>
-
-    <!-- Reel Library / Portfolio Section -->
-    <section id="work" class="py-20 px-4 max-w-7xl mx-auto space-y-12">
-        <div class="text-center space-y-3">
-            <span class="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">The Reel Library</span>
-            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">My Work</h2>
-            <p class="text-sm text-gray-400 max-w-md mx-auto">Marvel, anime, Indian cinema, and emotional edits — a curated grid of the categories that define HitsX.edit.</p>
-        </div>
-
-        <!-- Filter Buttons -->
-        <div class="flex flex-wrap justify-center gap-3">
-            <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-black transition" data-filter="all">All Edits</button>
-            <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 border border-white/10 hover:bg-white/10 transition" data-filter="marvel">Marvel</button>
-            <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 border border-white/10 hover:bg-white/10 transition" data-filter="anime">Anime & Fantasy</button>
-            <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 border border-white/10 hover:bg-white/10 transition" data-filter="indian">Indian Cinema</button>
-            <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/5 border border-white/10 hover:bg-white/10 transition" data-filter="romantic">Romantic Edits</button>
-        </div>
-
-        <!-- Video Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Item 1 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="marvel">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1635863138275-d9b33299680b?auto=format&fit=crop&q=80&w=800" alt="Spider-Man" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Marvel</span>
-                            <h4 class="font-bold text-lg text-white mt-1">Spider-Man : BND</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
+            <!-- Active Video Player Area -->
+            <div id="playerContainer" class="hidden glass-panel p-4 rounded-3xl space-y-4 border border-rose-500/30">
+                <div class="flex justify-between items-center">
+                    <h3 id="currentMovieTitle" class="font-bold text-lg text-white">Movie Player</h3>
+                    <!-- Server Switcher -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-400">Servers:</span>
+                        <button onclick="switchServer(1)" class="srv-btn px-3 py-1 rounded-lg bg-rose-600 text-xs font-bold">S1</button>
+                        <button onclick="switchServer(2)" class="srv-btn px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold">S2</button>
+                        <button onclick="switchServer(3)" class="srv-btn px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold">S3</button>
+                        <button onclick="switchServer(4)" class="srv-btn px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold">S4</button>
+                        <button onclick="switchServer(5)" class="srv-btn px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold">S5</button>
                     </div>
                 </div>
-            </div>
+                
+                <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black">
+                    <iframe id="videoIframe" src="" class="w-full h-full border-0" allowfullscreen></iframe>
+                </div>
 
-            <!-- Item 2 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="marvel">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=800" alt="Thor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Marvel</span>
-                            <h4 class="font-bold text-lg text-white mt-1">God of Thunder</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
-                    </div>
+                <div class="flex justify-between items-center text-xs text-gray-400 pt-2">
+                    <span>If server 1 buffering/issue occurs, switch to Server 2-5 above.</span>
+                    <a id="directDmReq" href="#" target="_blank" class="text-purple-400 underline font-semibold">Movie Play Link Request via DM</a>
                 </div>
             </div>
 
-            <!-- Item 3 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="marvel">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=800" alt="Loki" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Marvel</span>
-                            <h4 class="font-bold text-lg text-white mt-1">God of Mischief</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
+            <!-- Movies Grid -->
+            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Movie Item 1 -->
+                <div class="movie-card glass-panel rounded-2xl overflow-hidden p-3 border border-white/10 cursor-pointer hover:border-rose-500 transition" onclick="playMovie('Avengers: Endgame (Hindi)', 'https://www.youtube.com/embed/TcMBFSGVi1c')">
+                    <div class="aspect-[2/3] rounded-xl overflow-hidden relative mb-3">
+                        <img src="https://images.unsplash.com/photo-1635863138275-d9b33299680b?auto=format&fit=crop&q=80&w=600" alt="Avengers" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-rose-600 text-[9px] font-bold px-2 py-0.5 rounded">HINDI DUBBED</span>
                     </div>
+                    <h4 class="font-bold text-sm text-white truncate">Avengers: Endgame</h4>
+                    <p class="text-[11px] text-gray-400">Full HD · Marvel</p>
                 </div>
-            </div>
 
-            <!-- Item 4 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="anime">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=800" alt="Anime" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Anime & Fantasy</span>
-                            <h4 class="font-bold text-lg text-white mt-1">Crimson Blade — Night Battle</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
+                <!-- Movie Item 2 -->
+                <div class="movie-card glass-panel rounded-2xl overflow-hidden p-3 border border-white/10 cursor-pointer hover:border-rose-500 transition" onclick="playMovie('The Batman (Hindi)', 'https://www.youtube.com/embed/mqqft2x_Aa4')">
+                    <div class="aspect-[2/3] rounded-xl overflow-hidden relative mb-3">
+                        <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=600" alt="Batman" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-rose-600 text-[9px] font-bold px-2 py-0.5 rounded">HINDI DUBBED</span>
                     </div>
+                    <h4 class="font-bold text-sm text-white truncate">The Batman</h4>
+                    <p class="text-[11px] text-gray-400">Full HD · DC Studios</p>
                 </div>
-            </div>
 
-            <!-- Item 5 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="indian">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&q=80&w=800" alt="Indian Cinema" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Indian Cinema</span>
-                            <h4 class="font-bold text-lg text-white mt-1">Rama — The Light of Dharma</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
+                <!-- Movie Item 3 -->
+                <div class="movie-card glass-panel rounded-2xl overflow-hidden p-3 border border-white/10 cursor-pointer hover:border-rose-500 transition" onclick="playMovie('Avatar: The Way of Water (Hindi)', 'https://www.youtube.com/embed/d9MyW72ELq0')">
+                    <div class="aspect-[2/3] rounded-xl overflow-hidden relative mb-3">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=600" alt="Avatar" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-rose-600 text-[9px] font-bold px-2 py-0.5 rounded">HINDI DUBBED</span>
                     </div>
+                    <h4 class="font-bold text-sm text-white truncate">Avatar 2</h4>
+                    <p class="text-[11px] text-gray-400">Full HD · Sci-Fi</p>
                 </div>
-            </div>
 
-            <!-- Item 6 -->
-            <div class="portfolio-item glass-card rounded-3xl overflow-hidden group cursor-pointer" data-category="romantic">
-                <div class="aspect-[9/16] relative overflow-hidden bg-black">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=800" alt="Romantic" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md">Romantic Edits</span>
-                            <h4 class="font-bold text-lg text-white mt-1">La La Land</h4>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <i class="fa-solid fa-play text-white text-xs"></i>
-                        </div>
+                <!-- Movie Item 4 -->
+                <div class="movie-card glass-panel rounded-2xl overflow-hidden p-3 border border-white/10 cursor-pointer hover:border-rose-500 transition" onclick="playMovie('Spider-Man: Across Spider-Verse (Hindi)', 'https://www.youtube.com/embed/cqGjhVJWtEg')">
+                    <div class="aspect-[2/3] rounded-xl overflow-hidden relative mb-3">
+                        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=600" alt="Spider-Verse" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-rose-600 text-[9px] font-bold px-2 py-0.5 rounded">HINDI DUBBED</span>
                     </div>
+                    <h4 class="font-bold text-sm text-white truncate">Spider-Man: Spider-Verse</h4>
+                    <p class="text-[11px] text-gray-400">Full HD · Animation</p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Collaborate / Steps Section -->
-    <section id="collaborate" class="py-20 px-4 max-w-4xl mx-auto space-y-16">
-        <div class="text-center space-y-3">
-            <span class="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">Collaborate</span>
-            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">Let's create something <span class="text-rose-500">that hits different</span></h2>
-            <p class="text-sm text-gray-400 max-w-md mx-auto">I turn cinematic moments into edits that people feel, replay, and remember.</p>
-        </div>
-
-        <div class="space-y-6">
-            <div class="glass-card rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row gap-6 items-start">
-                <span class="text-4xl sm:text-5xl font-black text-rose-500 font-mono">01</span>
-                <div class="space-y-2">
-                    <h3 class="text-xl font-bold uppercase tracking-wide">Create an edit</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">Make an edit that matches the style and vibe of my page — Marvel, anime, Indian cinema, or emotional storytelling.</p>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row gap-6 items-start">
-                <span class="text-4xl sm:text-5xl font-black text-rose-500 font-mono">02</span>
-                <div class="space-y-2">
-                    <h3 class="text-xl font-bold uppercase tracking-wide">Send it over</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">Send the sample edit to me through Instagram DM — @hitsx.edit.</p>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row gap-6 items-start">
-                <span class="text-4xl sm:text-5xl font-black text-rose-500 font-mono">03</span>
-                <div class="space-y-2">
-                    <h3 class="text-xl font-bold uppercase tracking-wide">We collaborate</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">If I like the result and it fits my profile, we can collaborate on that Reel.</p>
-                    <p class="text-xs text-rose-400/80 pt-2">Submitting an edit doesn't guarantee a collaboration — every sample is reviewed individually to see if it fits the page.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-            <a href="https://instagram.com" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-bold tracking-wider text-center hover:bg-gray-200 transition">SEND YOUR EDIT</a>
-            <a href="#work" class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#141218] border border-white/10 text-white font-bold tracking-wider text-center hover:bg-white/10 transition">EXPLORE MY WORK</a>
-        </div>
-    </section>
+    </div>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-16 px-4">
-        <div class="max-w-7xl mx-auto flex flex-col items-center text-center space-y-6">
-            <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Avatar" class="w-full h-full object-cover">
-            </div>
-            <div class="space-y-1">
-                <h4 class="font-bold tracking-widest text-lg">HITSX.EDIT</h4>
-                <p class="text-xs text-gray-400 max-w-sm">CINEMA · EDITS · STORIES · Creating emotions. ⚡ High-quality cinematic edits. 🔓 Open for collaborations</p>
-            </div>
-            <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-full border border-white/10 hover:border-white/30 transition">
-                <i class="fab fa-instagram"></i> @hitsx.edit
-            </a>
-            <p class="text-xs text-gray-600">Video Editor</p>
-            <p class="text-xs text-gray-700 pt-4">© 2026 HitsX.edit — Cinematic edits. Referenced characters & films are stylistic inspirations, not affiliated works.</p>
+    <footer class="border-t border-white/10 py-12 px-4 mt-20 text-center">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <h3 class="font-black tracking-wider text-xl text-white">ROBIN SOLACE</h3>
+            <p class="text-xs text-gray-400">Video Editor · 4K Scene Packs Provider · Content Creator</p>
+            <p class="text-xs text-gray-600">Instagram DM: <a href="https://ig.me/m/robinsolace" target="_blank" class="text-purple-400 underline">@robinsolace</a></p>
         </div>
     </footer>
 
-    <!-- JavaScript for Mobile Menu and Portfolio Filter -->
+    <!-- Interactive Scripts -->
     <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const closeBtn = document.getElementById('close-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('translate-x-full');
-        });
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+            document.body.style.overflow = 'auto';
+            if (id === 'movieModal') {
+                document.getElementById('videoIframe').src = '';
+                document.getElementById('playerContainer').classList.add('hidden');
+            }
+        }
 
-        closeBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-        });
+        let currentBaseUrl = '';
+        function playMovie(title, embedUrl) {
+            currentBaseUrl = embedUrl;
+            document.getElementById('playerContainer').classList.remove('hidden');
+            document.getElementById('currentMovieTitle').innerText = title;
+            document.getElementById('videoIframe').src = embedUrl;
+            
+            // Set Direct DM Link
+            const dmMsg = encodeURIComponent("Hey Robin! Send me direct player URL for " + title);
+            document.getElementById('directDmReq').href = "https://ig.me/m/robinsolace?text=" + dmMsg;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('translate-x-full');
+        function switchServer(serverNum) {
+            if (!currentBaseUrl) return;
+            // Simulated multi-server fallback handling
+            const videoIframe = document.getElementById('videoIframe');
+            videoIframe.src = currentBaseUrl + "?rel=0&autoplay=1";
+            
+            // Highlight active server button
+            const btns = document.querySelectorAll('.srv-btn');
+            btns.forEach((btn, idx) => {
+                if (idx + 1 === serverNum) {
+                    btn.className = "srv-btn px-3 py-1 rounded-lg bg-rose-600 text-xs font-bold";
+                } else {
+                    btn.className = "srv-btn px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold";
+                }
             });
-        });
+        }
 
-        // Portfolio Filtering
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => {
-                    b.classList.remove('bg-white', 'text-black');
-                    b.classList.add('bg-white/5', 'border', 'border-white/10');
-                });
-                btn.classList.remove('bg-white/5', 'border', 'border-white/10');
-                btn.classList.add('bg-white', 'text-black');
-
-                const filter = btn.getAttribute('data-filter');
-
-                portfolioItems.forEach(item => {
-                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+        function searchMovies() {
+            const query = document.getElementById('movieSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.movie-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h4').innerText.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
-        });
+        }
     </script>
 </body>
 </html>
