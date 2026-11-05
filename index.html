@@ -4,18 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROBIN (@robinsolace) — Cinematic & Meme Video Editor</title>
-    <!-- CSS file ko connect karne ke liye -->
-    <link rel="stylesheet" href="style.css">
-    <!-- Premium Icons ke liye FontAwesome -->
+    
+    <!-- Fonts and Icons Framework -->
     <link rel="stylesheet" href="https://cloudflare.com">
+
+    <!-- ALL STYLING (CSS) INCLUDED HERE directly -->
+    <style>
+        /* Reset Core Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #05070f; /* Deep dark blue-black base to match Loki image background */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .portfolio-container {
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+        }
+
+        /* Header Styling with Blue Accents */
+        .profile-header {
+            margin-bottom: 40px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+        }
+
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #00bcff; /* Neon bright blue matching text flare */
+            object-fit: cover;
+            object-position: top; /* Ensures face centers cleanly */
+            z-index: 2;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 188, 255, 0.4);
+        }
+
+        .blue-glow {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #0070f3;
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 188, 255, 0.6);
+        }
+
+        .profile-username {
+            color: #00bcff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-bio {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Live View Counter styling */
+        .view-counter {
+            background: rgba(0, 188, 255, 0.08);
+            border: 1px solid rgba(0, 188, 255, 0.2);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .text-blue {
+            color: #00bcff;
+            margin-right: 5px;
+        }
+
+        /* Grid Posts & Content Area */
+        .content-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background: #0e1220;
+            border: 1px solid #1a233d;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: left;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
+            border-color: #00bcff;
+            box-shadow: 0 5px 15px rgba(0, 188, 255, 0.1);
+        }
+
+        .video-placeholder {
+            height: 160px;
+            background: linear-gradient(135deg, #070a14, #121829);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #1a233d;
+        }
+
+        .blue-icon {
+            font-size: 3rem;
+            color: rgba(0, 188, 255, 0.5);
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .post-card:hover .blue-icon {
+            color: #00bcff;
+            transform: scale(1.1);
+        }
+
+        .post-details {
+            padding: 15px 20px;
+        }
+
+        .post-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .genre-tag {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .audio-info {
+            font-size: 0.85rem;
+            color: #cbd5e0;
+            margin-bottom: 15px;
+        }
+
+        .audio-info i {
+            color: #00bcff;
+            margin-right: 4px;
+        }
+
+        .btn-watch {
+            display: inline-block;
+            background: #00bcff;
+            color: #05070f;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-watch:hover {
+            background: #009fd9;
+            box-shadow: 0 0 10px rgba(0, 188, 255, 0.4);
+        }
+
+        /* Outer links & Buttons */
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .action-link-btn {
+            background: transparent;
+            border: 1px solid #1a233d;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .action-link-btn:hover {
+            background: rgba(0, 188, 255, 0.05);
+            border-color: #00bcff;
+            box-shadow: 0 0 8px rgba(0, 188, 255, 0.2);
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #4a5568;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
 
     <div class="portfolio-container">
         
-        <!-- Header Section -->
+        <!-- Header -->
         <header class="profile-header">
             <div class="avatar-wrapper">
+                <!-- IMPORTANT: Save your image as profile.png in the same folder -->
                 <img src="profile.png" alt="ROBIN" class="profile-avatar">
                 <div class="blue-glow"></div>
             </div>
@@ -23,14 +246,16 @@
             <p class="profile-username"><i class="fab fa-instagram"></i> @robinsolace</p>
             <p class="profile-bio">Standing alone at the end of time. ⏳🕯️<br>Free movie website & app available. Open for Collabs — DM Now!</p>
             
+            <!-- Live View Counter Section -->
             <div class="view-counter">
                 <i class="fas fa-eye text-blue"></i> Profile Views: <span id="count">00000</span>
             </div>
         </header>
 
-        <!-- Video Portfolio Grid -->
+        <!-- Content Grid -->
         <main class="content-grid">
             
+            <!-- Post Card 1 -->
             <div class="post-card">
                 <div class="video-placeholder">
                     <i class="fas fa-play-circle blue-icon"></i>
@@ -43,6 +268,7 @@
                 </div>
             </div>
 
+            <!-- Post Card 2 -->
             <div class="post-card">
                 <div class="video-placeholder">
                     <i class="fas fa-play-circle blue-icon"></i>
@@ -55,7 +281,7 @@
                 </div>
             </div>
 
-            <!-- Social Links -->
+            <!-- Action Buttons -->
             <div class="links-section">
                 <a href="https://instagram.com" target="_blank" class="action-link-btn">
                     <i class="fab fa-instagram"></i> Follow on Instagram
@@ -72,6 +298,22 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <!-- LIVE VIEW COUNTER SCRIPT (JAVASCRIPT) INCLUDED HERE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentViews = localStorage.getItem("portfolio_views");
+            if (currentViews === null) {
+                currentViews = 1540; // Starting baseline views
+            } else {
+                currentViews = parseInt(currentViews) + 1;
+            }
+            localStorage.setItem("portfolio_views", currentViews);
+            
+            const countDisplay = document.getElementById("count");
+            if (countDisplay) {
+                countDisplay.textContent = currentViews.toString().padStart(5, '0');
+            }
+        });
+    </script>
 </body>
 </html>
